@@ -1,0 +1,125 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.props;
+
+// Calculer le temps de lecture
+const content = await Astro.slots.render('default');
+const wordCount = content.split(/\s+/g).length;
+const readingTime = Math.max(1, Math.round(wordCount / 200));
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<style>
+			.date-and-tags {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0.5rem 0;
+			}
+			.tags {
+				display: flex;
+				gap: 0.5rem;
+			}
+			.tag {
+				background-color: var(--secondary-background);
+				color: var(--primary-color);
+				padding: 0.3rem 0.8rem;
+				border-radius: 20px;
+				font-size: 0.8rem;
+				text-decoration: none;
+				transition: all 0.2s ease;
+			}
+			.tag:hover {
+				background-color: var(--accent);
+				transform: translateY(-2px);
+			}
+
+			.hero-image {
+				img {
+					background-color: white;
+				}
+			}
+			hr {
+				margin: 1.5rem 0;
+				border-color: var(--secondary-color);
+			}
+
+			.date-container {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.date {
+				display: flex;
+				align-items: center;
+			}
+
+			.clock-icon {
+				color: #888;
+			}
+			.reading-time {
+				padding-left: 0.5rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<Header />
+		<main>
+			<article>
+				<div class="prose">
+					<div class="title">
+						<div class="date-and-tags">
+							<div class="date">
+							<div class="date-container">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="clock-icon">
+									<circle cx="12" cy="12" r="10"></circle>
+									<polyline points="12 6 12 12 16 14"></polyline>
+								</svg>
+								<FormattedDate date={pubDate} />
+							</div>
+							<!-- {
+								updatedDate && (
+									<div class="last-updated-on">
+										Last updated on <FormattedDate date={updatedDate} />
+									</div>
+								)
+							} -->
+							<div class="reading-time">
+								- {readingTime} min de lecture
+							</div>
+						</div>
+						{tags && tags.length > 0 && (
+							<div class="tags">
+								{tags.map(tag => (
+									<a href={`/blog/tag/${tag}`} class="tag">{tag}</a>
+								))}
+							</div>
+						)}
+					</div>
+					<h1>{title}</h1>
+				<div class="hero-image">
+					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
+				</div>
+						{description && (
+							<p>{description}</p>
+						)}
+						<hr />
+					</div>
+					<slot />
+				</div>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>

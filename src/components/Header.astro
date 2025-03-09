@@ -1,0 +1,49 @@
+---
+import { SITE_TITLE } from '../consts';
+---
+
+<header>
+	<nav>
+		<h3><a href="/blog">{SITE_TITLE}</a></h3>
+	</nav>
+</header>
+<style>
+	header {
+		width: 60%;
+		height: 60px;
+		display: flex;
+		justify-self: center;
+		background-color: var(--secondary-background);
+		position: sticky;
+		top: 2%;
+		border-radius: 20px;
+	}
+	nav {
+		padding: 0em 2em 0em 2em;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	h3 {
+		margin: 0;
+		font-size: 1em;
+	}
+
+	h3 a,
+	h3 a.active {
+		text-decoration: none;
+	}
+
+	@media (max-width: 720px) {
+		header {
+			width: 95%;
+		}
+	}
+	@media (max-width: 1280px) {
+		header {
+			width: 90%;
+		}
+	}
+
+</style>

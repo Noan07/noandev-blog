@@ -1,0 +1,45 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../../consts';
+import { getCollection } from 'astro:content';
+import BlogList from '../../../components/BlogList.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  const uniqueTags = [...new Set(allPosts.flatMap(post => post.data.tags))];
+  
+  return uniqueTags.map(tag => {
+    return {
+      params: { tag },
+      props: { tag },
+    };
+  });
+}
+
+const { tag } = Astro.params;
+
+// Récupérer tous les articles
+let posts = await getCollection('blog');
+
+// Filtrer les articles par tag
+posts = posts.filter(post => post.data.tags.includes(tag));
+
+// Trier les articles par date
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`${tag} - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<BlogList posts={posts} activeTag={tag} />
+		</main>
+		<Footer />
+	</body>
+</html>

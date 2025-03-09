@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Tag from './Tag.astro';
+
+const allPosts = await getCollection('blog');
+const allTags = [...new Set(allPosts.flatMap(post => post.data.tags))].sort();
+
+// Compter le nombre d'articles par tag
+const tagCounts = allTags.reduce((acc, tag) => {
+  const count = allPosts.filter(post => post.data.tags.includes(tag)).length;
+  acc[tag] = count;
+  return acc;
+}, {} as Record<string, number>);
+
+const { activeTag } = Astro.props;
+
+---
+
+<div class="tag-list">
+  <Tag tag="Tous" active={!activeTag} />
+  {allTags.map(tag => (
+    <Tag tag={tag} count={tagCounts[tag]} active={activeTag === tag} />
+  ))}
+</div>
+
+<style>
+  .tag-list {
+    display: flex;
+    align-items: center;
+  }
+</style>

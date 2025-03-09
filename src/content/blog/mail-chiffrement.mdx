@@ -1,0 +1,157 @@
+---
+title: 'Comment envoyer des emails chiffrés avec GPG'
+description: 'Un guide complet pour sécuriser vos communications par email avec GPG, sans dépendre dun client mail spécifique'
+pubDate: '2024-03-21'
+heroImage: '/assets/chiffrement.png' # [Image suggérée : Une illustration montrant une enveloppe avec un cadenas, symbolisant un email sécurisé]
+tags: ['sécurité', 'gpg', 'cryptographie']
+---
+
+# Envoyer des emails chiffrés avec GPG
+
+La sécurité des communications est devenue primordiale dans notre ère numérique. Dans ce guide, nous allons voir comment envoyer des emails chiffrés en utilisant GPG (GNU Privacy Guard), sans dépendre d'un client mail spécifique.
+
+## Pourquoi chiffrer ses emails ?
+
+<img class="wordcloud" src="/assets/wordcloud.svg" alt="" />
+
+Les emails standards sont comme des cartes postales : n'importe qui sur le chemin peut les lire. Le chiffrement transforme vos messages en texte illisible pour tous, sauf le destinataire prévu.
+
+## Prérequis
+
+Avant de commencer, assurons-nous d'avoir les outils nécessaires :
+
+### Installation de GPG
+
+**Sur macOS :**
+```bash
+brew install gnupg
+```
+
+**Sur Linux :**
+```bash
+sudo apt-get install gnupg
+```
+
+**Sur Windows :**
+
+Téléchargez et installez Gpg4win depuis [gpg4win.org](https://gpg4win.org)
+
+Vérifiez votre installation :
+```bash
+gpg --version
+```
+
+## Configuration initiale
+
+### 1. Création du répertoire GPG
+
+```bash
+mkdir -p ~/.gnupg
+chmod 700 ~/.gnupg
+```
+
+### 2. Génération de vos clés
+
+```bash
+gpg --full-generate-key
+```
+
+Suivez les étapes :
+- Choisissez le type de clé (RSA et RSA par défaut)
+- Taille de clé : 4096 bits pour plus de sécurité
+- Date d'expiration : choisissez selon vos besoins
+- Entrez vos informations personnelles
+
+### 3. Vérification de vos clés
+
+```bash
+gpg --list-keys
+```
+
+## Préparation d'un email chiffré
+
+[Image suggérée : Diagramme montrant le flux de chiffrement/déchiffrement]
+
+### 1. Exportez votre clé publique
+
+```bash
+gpg --armor --export votre@email.com > ma-cle-publique.asc
+```
+
+Le contenu de ce fichier ressemblera à :
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+[Votre clé publique en format texte]
+-----END PGP PUBLIC KEY BLOCK-----
+
+
+### 2. Partagez votre clé publique
+
+[Image suggérée : Différentes méthodes de partage sécurisé de clés]
+
+Options pour partager votre clé :
+- Site web personnel
+- Serveurs de clés publiques
+- Échange en personne (plus sûr)
+
+## Envoi d'un email chiffré
+
+### 1. Importez la clé publique du destinataire
+
+```bash
+gpg --import cle-destinataire.asc
+```
+
+### 2. Préparez votre message
+
+Créez votre message dans un fichier texte :
+```bash
+echo "Message secret" > message.txt
+```
+
+### 3. Chiffrez le message
+
+```bash
+gpg --encrypt --armor --recipient destinataire@email.com message.txt
+```
+
+Le résultat sera un fichier <span class="highlight">message.txt.asc</span> contenant votre message chiffré :
+
+-----BEGIN PGP MESSAGE-----
+[Message chiffré]
+-----END PGP MESSAGE-----
+
+### 4. Envoi du message
+
+[Image suggérée : Capture d'écran montrant où coller le message chiffré dans un email]
+
+1. Ouvrez votre service mail habituel
+2. Créez un nouveau message
+3. Copiez-collez le contenu du fichier .asc
+4. Envoyez !
+
+## Réception et lecture d'un message chiffré
+
+[Image suggérée : Processus de déchiffrement étape par étape]
+
+1. Copiez le message chiffré dans un fichier
+2. Déchiffrez avec :
+```bash
+gpg --decrypt message.asc
+```
+
+## Bonnes pratiques de sécurité
+
+[Image suggérée : Checklist de sécurité illustrée]
+
+- Gardez votre clé privée en sécurité
+- Utilisez une phrase de passe forte
+- Faites des sauvegardes de vos clés
+- Vérifiez les empreintes des clés reçues
+- Utilisez une date d'expiration pour vos clés
+
+## Conclusion
+
+Le chiffrement des emails avec GPG peut sembler complexe au début, mais c'est un investissement important pour votre sécurité numérique. Avec de la pratique, cela devient une seconde nature.
+
+[Image suggérée : Illustration finale montrant un email sécurisé arrivant à destination Mini BD]

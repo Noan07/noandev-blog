@@ -1,0 +1,44 @@
+---
+export interface Props {
+  tag: string;
+  count?: number;
+  active?: boolean;
+}
+
+const { tag, count, active = false } = Astro.props;
+const tagLink = tag === "Tous" ? "/blog" : `/blog/tag/${tag}`;
+---
+
+<a href={tagLink} class={`tag ${active ? "active" : ""}`}>
+  {tag}
+  {count && <span class="count">({count})</span>}
+</a>
+
+<style>
+  .tag {
+    display: inline-block;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.3rem 0.8rem;
+    background-color: var(--secondary-background);
+    color: var(--primary-color);
+    border-radius: 10px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .tag:hover {
+    background-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .tag.active {
+    background-color: var(--accent);
+  }
+
+  span.count {
+    margin-left: 0.2rem;
+    color: rgb(var(--gray-light));
+  }
+</style>
