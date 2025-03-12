@@ -1,0 +1,93 @@
+---
+title: 'Comment supprimer les shorts sur Youtube avec ARC'
+description: 'Guide pratique pour personnaliser votre expérience YouTube en supprimant les shorts et les publicités'
+pubDate: '2024-03-10'
+heroImage: '/assets/shorts.png'
+tags: ['ARC']
+---
+
+# Personnaliser YouTube avec les règles Boost d'ARC
+
+ARC est un navigateur innovant qui permet de personnaliser l'apparence et le comportement des sites web grâce à des "Boosts". Ces Boosts utilisent du CSS (Cascading Style Sheets) et du JavaScript pour modifier l'interface des sites sans altérer leur fonctionnement de base.
+
+## Qu'est-ce qu'un Boost dans ARC ?
+
+Un Boost est essentiellement une collection de règles CSS / JavaScript personnalisées qui s'appliquent à un site spécifique. Ces règles peuvent :
+- Masquer des éléments indésirables
+- Modifier l'apparence visuelle
+- Réorganiser des éléments de l'interface
+- Améliorer l'expérience utilisateur
+
+## Guide étape par étape
+
+### 1. Accéder à YouTube
+
+Rendez-vous sur le site de YouTube :
+https://www.youtube.com
+
+
+### 2. Créer un nouveau Boost
+
+Cliquez sur l'icône "+" dans la barre latérale d'ARC :
+<img src="/assets/arc-ytb/ytb1.png" alt="Icône d'ajout de Boost dans ARC" />
+
+Puis sélectionnez "Edit Boost" :
+<img src="/assets/arc-ytb/ytb2.png" alt="Option Edit Boost" />
+
+### 3. Accéder à l'éditeur de code
+
+Cliquez sur l'onglet "Code" pour ouvrir l'éditeur :
+<img src="/assets/arc-ytb/ytb3.png" alt="Onglet Code dans l'éditeur de Boost" />
+
+Assurez-vous d'être dans l'onglet CSS :
+<img src="/assets/arc-ytb/ytb4.png" alt="Sélection de l'onglet CSS" />
+
+### 4. Ajouter les règles CSS
+
+#### Pour supprimer les Shorts
+
+```css
+/* Supprimer shorts */
+a[title="Shorts"] {
+    display: none !important;
+}
+
+ytd-rich-section-renderer:has(.shortsLockupViewModelHost) {
+    display: none !important;
+}
+```
+
+**Explication des règles :**
+- <span class="highlight">a[title="Shorts"]</span> : Cible le lien de navigation "Shorts" dans la barre latérale
+- <span class="highlight">ytd-rich-section-renderer:has(.shortsLockupViewModelHost)</span> : Cible les sections de Shorts dans le fil principal
+- <span class="highlight">display: none !important</span> : Masque complètement ces éléments, la directive <span class="highlight">!important</span> garantit que cette règle prend priorité sur les styles par défaut de YouTube
+
+#### Pour supprimer les publicités
+
+```css
+/* Supprimer pubs */
+ytd-rich-item-renderer:has(.ytd-ad-slot-renderer) {
+    display: none !important;
+}
+```
+
+**Explication des règles :**
+- <span class="highlight">ytd-rich-item-renderer:has(.ytd-ad-slot-renderer)</span> : Cible les conteneurs qui contiennent des éléments publicitaires
+- Le sélecteur <span class="highlight">:has()</span> est une fonctionnalité CSS moderne qui permet de cibler un élément parent contenant un élément enfant spécifique
+
+## Personnalisation supplémentaire
+
+Vous pouvez adapter ces règles ou en ajouter d'autres pour personnaliser davantage votre expérience YouTube. Par exemple :
+
+```css
+/* Masquer les suggestions de vidéos */
+ytd-watch-next-secondary-results-renderer {
+    display: none !important;
+}
+```
+
+## Conclusion
+
+Les Boosts d'ARC offrent un moyen puissant de reprendre le contrôle de votre expérience en ligne. En comprenant les bases du CSS et en utilisant des sélecteurs appropriés, vous pouvez transformer n'importe quel site web pour qu'il corresponde mieux à vos besoins et préférences.
+
+N'hésitez pas à expérimenter avec différentes règles pour créer l'expérience YouTube idéale pour vous !
