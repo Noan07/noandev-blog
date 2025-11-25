@@ -1,0 +1,61 @@
+---
+title: "Transformer sa tour en un serveur sécurisé: retour d'expérience"
+description: "Retour d'expérience sur la transformation d'une ancienne tour en serveur domestique sécurisé"
+pubDate: "2024-09-24"
+heroImage: "/assets/chiffrement.png"
+tags: ["DIY"]
+---
+
+# Transformer sa tour en un serveur sécurisé: retour d'expérience
+
+Tel un informaticien, j'ai l'envie d'héberger et de mettre en ligne mes projets, on connait tous la méthode de prendre un abonnement chez un hébergement du style OVH, mais cela reste couteux. Mais surtout moins fun que de le créer soi-même. J'ai sorti une vieille tour, acheté une clé Wifi et un disque dur manquant. Sortir ma vieille tour du grenier que j'avais récupérer.
+
+J'ai donc découpé mon périple en plusieurs étapes:
+- Installation d'une distribution Linux
+- Sécurisation de mon serveur
+- Installation d'un environnement Kubernetes
+- Installation d'un gitlab
+- Bonus : installation d'un serveur Minecraft
+
+
+Étapes clés
+Installer une distro : debian 13 + clé WIFI + disque dur
+Sécurisation du serveur :
+- Mise à jour du système
+  ```bash
+  sudo apt update && sudo apt upgrade -y
+  ```
+- Installation des outils utiles
+  ```bash
+  sudo apt install -y curl git ufw fail2ban unattended-upgrades openssh-server
+  ```
+- Sécurité SSH
+  ``` bash
+  sudo nano /etc/ssh/sshd_config
+  ```
+  Modifier les paramètres de sécurité SSH
+  ```nginx
+  PermitRootLogin no
+  PasswordAuthentication no
+  ```
+  Recharger SSH :
+  ```bash
+  sudo systemctl reload ssh
+  ```
+- Configurer firewall :
+``` bash
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22/tcp
+sudo ufw allow 80,443/tcp
+sudo ufw enable
+```
+- Installer docker et docker-compose
+```bash
+ curl -fsSL https://get.docker.com -o get-docker.sh
+ sudo sh get-docker.sh
+ sudo usermod -aG docker $USER
+ sudo apt install -y docker-compose-plugin
+```
+- Nom de domaine (https://duckdns.org)
+ Duck  duck.example.com
